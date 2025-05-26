@@ -15,12 +15,14 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.4",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-type-coverage": "^3.5"
     },
     "autoload": {
         "psr-4": {
@@ -54,9 +56,22 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
         ],
+        "lint": [
+            "pint"
+        ],
+        "test:lint": [
+            "pint --test"
+        ],
+        "test:types": [
+            "phpstan analyse --memory-limit=-1"
+        ],
+        "test:type-coverage": "pest --type-coverage --memory-limit=-1",
+        "test:unit": "pest --parallel --ci --coverage --min=100.0",
         "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@test:lint",
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
         ]
     },
     "extra": {

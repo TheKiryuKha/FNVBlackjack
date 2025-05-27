@@ -16,6 +16,15 @@
         <include>
             <directory>app</directory>
         </include>
+
+        <exclude>
+            
+            <!-- Fortify package -->
+            <directory>app/Actions/Fortify</directory>
+            <file>app/Providers/FortifyServiceProvider.php</file>
+        
+        </exclude>
+    
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>

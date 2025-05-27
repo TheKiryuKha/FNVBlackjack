@@ -6,6 +6,13 @@
     <title>Casino</title>
 </head>
 <body>
+    @auth
+        <p>ЛЫОВАЛЫВОАЛДВЫОАДЛО</p>
+        <form action="{{ route('logout') }}" method="post"> 
+            @csrf
+            <input type="submit" value="Выйти">
+        </form>
+    @endauth
     <h1>Ваши карты:</h1>
 
     @foreach ($cards as $card)

@@ -3,14 +3,18 @@
 declare(strict_types=1);
 
 use App\Models\Card;
-use App\Models\Hand;
+use App\Models\Croupier;
+use App\Models\Game;
+use App\Models\User;
 
 test('to array', function () {
     $card = Card::factory()->create()->fresh();
 
     expect(array_keys($card->toArray()))->toBe([
         'id',
-        'hand_id',
+        'game_id',
+        'owner_id',
+        'owner_type',
         'type',
         'suit',
         'points',
@@ -19,11 +23,26 @@ test('to array', function () {
     ]);
 });
 
-it('belongs to Hand', function () {
-    $hand = Hand::factory()->create();
-    $card = Card::factory()->create([
-        'hand_id' => $hand->id,
-    ]);
+it('belongs to user', function () {
+    $card = Card::factory()
+        ->for(User::factory(), 'owner')
+        ->create();
 
-    expect($card->hand)->toBeInstanceOf(Hand::class);
+    expect($card->owner)->toBeInstanceOf(User::class);
+});
+
+it('belongs to croupier', function () {
+    $card = Card::factory()
+        ->for(Croupier::factory(), 'owner')
+        ->create();
+
+    expect($card->owner)->toBeInstanceOf(Croupier::class);
+});
+
+it('belongs to game', function () {
+    $card = Card::factory()
+        ->for(Game::factory())
+        ->create();
+
+    expect($card->game)->toBeInstanceOf(Game::class);
 });

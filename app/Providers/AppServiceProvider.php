@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureCommands();
         $this->configureUrls();
+
+        Relation::morphMap([
+            'user' => 'App\Models\User',
+            'croupier' => 'App\Models\Croupier',
+        ]);
     }
 
     private function configureModels(): void

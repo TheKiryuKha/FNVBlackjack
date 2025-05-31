@@ -6,7 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -36,10 +36,15 @@ final class User extends Authenticatable
         'remember_token',
     ];
 
-    /** @return HasOne<Hand, $this> */
-    public function hand(): HasOne
+    /** @return MorphMany<Card, $this>*/
+    public function cards(): MorphMany
     {
-        return $this->hasOne(Hand::class);
+        return $this->morphMany(Card::class, 'owner');
+    }
+
+    public function getMorphClass(): string
+    {
+        return 'user';
     }
 
     /**

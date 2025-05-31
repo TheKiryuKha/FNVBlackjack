@@ -7,22 +7,40 @@
 </head>
 <body>
     @auth
-        <p>ЛЫОВАЛЫВОАЛДВЫОАДЛО</p>
         <form action="{{ route('logout') }}" method="post"> 
             @csrf
             <input type="submit" value="Выйти">
         </form>
     @endauth
-    <h1>Ваши карты:</h1>
 
-    @foreach ($cards as $card)
-        <p>{{ $card['type'] }} {{ $card['suit'] }}: {{ $card['points'] }}</p>
-    @endforeach
-    <br>
+    <p>
+        Текущая ставка: <input type="number" id="numericInput" min="0" max="200" value="0">
+    </p>
+    <p>Всего фишек: {{ auth()->user()->chips }}</p>
+    <p>Выиграно: {{ auth()->user()->chipsWon }}</p>
 
-    <p>Всего: 23</p>
+    <button>Играть</button>
+    <button onclick="setMaxValue()">Макс. ставка</button>
+    <button onclick="setPlusOne()">Увеличить ставку</button>
+    <button onclick="setMinusOne()">Уменьшить ставку</button>
 
-    <button>Еще карту</button>
-    <button>Хватит</button>
 </body>
+
+<script>
+    function setMaxValue() {
+        document.getElementById('numericInput').value = 200;
+    }
+
+    function setPlusOne(){
+        if(document.getElementById('numericInput').value < 200){
+            document.getElementById('numericInput').value++;
+        }
+    }
+
+    function setMinusOne(){
+        if(document.getElementById('numericInput').value > 0){
+            document.getElementById('numericInput').value--;
+        } 
+    }
+</script>
 </html>

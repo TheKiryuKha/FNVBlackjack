@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Hand;
+use App\Models\Card;
 use App\Models\User;
 
 test('to array', function () {
@@ -12,6 +12,8 @@ test('to array', function () {
         'id',
         'name',
         'email',
+        'chips',
+        'chipsWon',
         'email_verified_at',
         'created_at',
         'updated_at',
@@ -21,11 +23,12 @@ test('to array', function () {
     ]);
 });
 
-it('has Hand', function () {
-    $user = User::factory()->create();
-    Hand::factory()->create([
-        'user_id' => $user->id,
-    ]);
+it('has cards', function () {
+    $user = User::factory()
+        ->has(Card::factory(3), 'cards')
+        ->create();
 
-    expect($user->hand)->toBeInstanceOf(Hand::class);
+    expect($user->cards)
+        ->toHaveCount(3)
+        ->each->toBeInstanceOf(Card::class);
 });

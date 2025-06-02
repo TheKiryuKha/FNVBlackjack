@@ -13,7 +13,7 @@ Route::post('/', [CasinoController::class, 'startGame'])
     ->middleware('auth')
     ->name('startGame');
 
-Route::get('/game', [CasinoController::class, 'game'])
+Route::get('/game/{game}', [CasinoController::class, 'game'])
     ->middleware('auth')
     ->name('game');
 
@@ -24,3 +24,7 @@ Route::delete('/game/{game}/loose', [CasinoController::class, 'loose'])
 Route::delete('/game/{game}/win', [CasinoController::class, 'win'])
     ->middleware('auth')
     ->name('win');
+
+Route::post('/game/{game}', [CasinoController::class, 'getCard'])
+    ->middleware('auth')
+    ->name('getCard');

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateCard;
 use App\Actions\StartGame;
+use App\Enums\GameStatus;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
 use App\Models\User;
@@ -22,20 +24,55 @@ final class CasinoController
     public function startGame(GameRequest $request, StartGame $action): RedirectResponse
     {
         /** @var int $bet */
-        $bet = $request->validated()['bet'];
+        $bet = (int) $request->validated()['bet'];
 
         /** @var User $user */
         $user = auth()->user();
 
-        $action->handle($user, $bet);
+        $game = $action->handle($user, $bet);
 
-        return redirect(route('game'));
+        return redirect(route('game', $game));
     }
 
-    public function game(): View
+    public function game(Game $game): RedirectResponse|View
     {
+        // auth
+        if ($game->user->getPoints() === 21) {
+            return to_route('win', $game);
+        }
 
-        return view('game');
+        if ($game->user->getPoints() > 21) {
+            return to_route('loose', $game);
+        }
+
+        if ($game->status === GameStatus::CroupiersMove) {
+            return to_route('');
+        }
+
+        $user_cards = $game->user->cards;
+        $croupiers_cards = $game->croupier->cards;
+
+        return view('game', [
+            'game' => $game,
+            'users_cards' => $user_cards,
+            'croupiers_cards' => $croupiers_cards,
+        ]);
+    }
+
+    public function getCard(Game $game, CreateCard $action): RedirectResponse
+    {
+        $action->handle([
+            'game_id' => $game->id,
+            'owner_id' => $game->user->id,
+            'owner_type' => 'user',
+        ]);
+
+        return to_route('game', $game);
+    }
+
+    public function croupierMove(): Response
+    {
+        return response(status: 200);
     }
 
     public function loose(Game $game): RedirectResponse

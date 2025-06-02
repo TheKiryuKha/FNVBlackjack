@@ -15,9 +15,9 @@ test('user starts the game', function () {
             'bet' => 100,
         ]);
 
-    $response->assertRedirectToRoute('game');
-
     $game = Game::first();
+
+    $response->assertRedirectToRoute('game', $game);
 
     expect($game)
         ->user_id->toBe($user->id)

@@ -12,14 +12,17 @@
             <input type="submit" value="Выйти">
         </form>
     @endauth
-
-    <p>
-        Текущая ставка: <input type="number" id="numericInput" min="0" max="200" value="0">
-    </p>
-    <p>Всего фишек: {{ auth()->user()->chips }}</p>
-    <p>Выиграно: {{ auth()->user()->chipsWon }}</p>
-
-    <button>Играть</button>
+    
+    <form action="{{ route('startGame') }}" method="post">
+        @csrf
+        <p>
+            Текущая ставка: <input type="int" name="bet" id="numericInput" min="0" max="200" value="0">
+        </p>
+        <p>Всего фишек: {{ auth()->user()->chips }}</p>
+        <p>Выиграно: {{ auth()->user()->chipsWon }}</p>
+        <button type="submit">Играть</button>
+    </form>
+    
     <button onclick="setMaxValue()">Макс. ставка</button>
     <button onclick="setPlusOne()">Увеличить ставку</button>
     <button onclick="setMinusOne()">Уменьшить ставку</button>

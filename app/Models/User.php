@@ -49,9 +49,15 @@ final class User extends Authenticatable
         return $this->hasOne(Game::class);
     }
 
-    public function getPoints()
+    public function getPoints(): int
     {
-        dd($this->cards);
+        $points = 0;
+
+        $this->cards()->each(function ($card) use ($points) {
+            $i = $points + $card->points;
+        });
+
+        return $points;
     }
 
     public function getMorphClass(): string

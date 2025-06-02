@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino</title>
+    <title>Game</title>
 </head>
 <body>
     @auth
@@ -14,16 +14,20 @@
     @endauth
 
     <p>Карты диллера: </p>
+    @foreach ($croupiers_cards as $card)
+        <p>{{ $card->type }} {{ $card->suit }}</p>    
+    @endforeach
     
-    <p>10 бубей</p>
-
 
     <p>Ваши карты: </p>
-    
-    <p>8 бубей</p>
+    @foreach ($users_cards as $card)
+        <p>{{ $card->type }} {{ $card->suit }}</p>    
+    @endforeach
 
-    {{-- Проверка на количество карт --}}
-    <a><button>Еще карта</button></a>
+    <form action="{{ route('getCard', $game) }}}}" method="post">
+        @csrf
+        <button type="submit">Еще карта</button>
+    </form>
     <a><button>Удвоить ставку</button></a>
     <a><button>Достаточно</button></a>
     <a><button>Отказ от игры</button></a>

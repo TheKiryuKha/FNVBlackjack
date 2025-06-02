@@ -32,10 +32,10 @@ final class CasinoController
         return redirect(route('game'));
     }
 
-    public function game(): Response
+    public function game(): View
     {
 
-        return response(status: 200);
+        return view('game');
     }
 
     public function loose(Game $game): RedirectResponse

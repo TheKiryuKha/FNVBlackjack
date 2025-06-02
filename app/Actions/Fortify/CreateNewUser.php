@@ -38,12 +38,9 @@ final class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'] ?? 'default',
             'email' => $input['email'],
             'chips' => 1000,
+            'chipsWon' => 0,
             'password' => Hash::make($input['password']),
             'email_verified_at' => now(),
-        ]);
-
-        Croupier::create([
-            'user_id' => $user->id,
         ]);
 
         return $user;

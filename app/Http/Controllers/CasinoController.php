@@ -38,15 +38,30 @@ final class CasinoController
         return response(status: 200);
     }
 
-    public function loose()
+    public function loose(Game $game): RedirectResponse
     {
-        // отнимает ставки
-        // удалят все карты игры
+        $user = $game->user;
+
+        $user->chips = $user->chips - $game->bet;
+        $user->chipsWon = $user->chipsWon - $game->bet;
+        $user->save();
+
+        $user->cards->each(function ($card) {
+            $card->delete();
+        });
+        $game->croupier->cards->each(function ($card) {
+            $card->delete();
+        });
+
+        $game->delete();
+
+        return to_route('home');
     }
 
     public function win(Game $game): RedirectResponse
     {
         $user = $game->user;
+
         $user->chips = $user->chips + $game->bet;
         $user->chipsWon = $user->chipsWon + $game->bet;
         $user->save();

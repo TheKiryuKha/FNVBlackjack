@@ -20,12 +20,12 @@ test('user starts the game', function () {
     $game = Game::first();
 
     expect($game)
-            ->user_id->toBe($user->id)
-            ->bet->toBe(100)
-            ->status->toBe(GameStatus::PlayersMove)
-            ->cards->toHaveCount(3);
-    
+        ->user_id->toBe($user->id)
+        ->bet->toBe(100)
+        ->status->toBe(GameStatus::PlayersMove)
+        ->cards->toHaveCount(3);
+
     expect($user->fresh()->cards)->toHaveCount(2);
     expect($game->croupier->cards)->toHaveCount(1);
 
-})->only();
+});

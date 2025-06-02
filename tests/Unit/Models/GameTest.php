@@ -21,7 +21,7 @@ test('to array', function () {
     ]);
 });
 
-it('has cards', function(){
+it('has cards', function () {
     $game = Game::factory()
         ->has(Card::factory(3))
         ->create();
@@ -31,7 +31,7 @@ it('has cards', function(){
         ->each->toBeInstanceOf(Card::class);
 });
 
-it('belongs to croupier', function(){
+it('belongs to croupier', function () {
     $game = Game::factory()
         ->for(Croupier::factory())
         ->create();
@@ -39,7 +39,7 @@ it('belongs to croupier', function(){
     expect($game->croupier)->toBeInstanceOf(Croupier::class);
 });
 
-it('belongs to user', function(){
+it('belongs to user', function () {
     $game = Game::factory()
         ->for(User::factory())
         ->create();

@@ -16,7 +16,7 @@ final class Game extends Model
     use HasFactory;
 
     protected $casts = [
-        'status' => GameStatus::class
+        'status' => GameStatus::class,
     ];
 
     /** @return HasMany<Card, $this>*/

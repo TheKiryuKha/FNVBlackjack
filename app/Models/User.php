@@ -42,6 +42,11 @@ final class User extends Authenticatable
         return $this->morphMany(Card::class, 'owner');
     }
 
+    public function getPoints()
+    {
+        dd($this->cards);
+    }
+
     public function getMorphClass(): string
     {
         return 'user';

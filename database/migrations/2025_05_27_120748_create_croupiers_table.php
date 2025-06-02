@@ -20,9 +20,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        foreach(['Mary', 'Kury', 'Igor', 'Natasha'] as $croupier){    
+        foreach (['Mary', 'Kury', 'Igor', 'Natasha'] as $croupier) {
             DB::table('croupiers')->insert([
-                'name' => $croupier
+                'name' => $croupier,
             ]);
         }
     }

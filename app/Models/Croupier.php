@@ -13,6 +13,11 @@ final class Croupier extends Model
     /** @use HasFactory<\Database\Factories\CroupierFactory> */
     use HasFactory;
 
+    public static function getRandomCroupier(): self
+    {
+        return self::inRandomOrder()->firstOrFail();
+    }
+
     /** @return MorphMany<Card, $this>*/
     public function cards(): MorphMany
     {

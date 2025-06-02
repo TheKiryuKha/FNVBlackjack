@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\StartGame;
 use App\Http\Requests\GameRequest;
+use App\Models\Game;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -22,7 +24,7 @@ final class CasinoController
         /** @var int $bet */
         $bet = $request->validated()['bet'];
 
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = auth()->user();
 
         $action->handle($user, $bet);
@@ -42,8 +44,22 @@ final class CasinoController
         // удалят все карты игры
     }
 
-    public function win()
+    public function win(Game $game): RedirectResponse
     {
-        //
+        $user = $game->user;
+        $user->chips = $user->chips + $game->bet;
+        $user->chipsWon = $user->chipsWon + $game->bet;
+        $user->save();
+
+        $user->cards->each(function ($card) {
+            $card->delete();
+        });
+        $game->croupier->cards->each(function ($card) {
+            $card->delete();
+        });
+
+        $game->delete();
+
+        return to_route('home');
     }
 }

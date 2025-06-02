@@ -17,10 +17,10 @@ Route::get('/game', [CasinoController::class, 'game'])
     ->middleware('auth')
     ->name('game');
 
-Route::get('/game/loose', [CasinoController::class, 'loose'])
+Route::delete('/game/{game}/loose', [CasinoController::class, 'loose'])
     ->middleware('auth')
     ->name('loose');
 
-Route::get('/game/win', [CasinoController::class, 'win'])
+Route::delete('/game/{game}/win', [CasinoController::class, 'win'])
     ->middleware('auth')
     ->name('win');

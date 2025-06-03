@@ -29,10 +29,14 @@ Route::post('/game/{game}', [CasinoController::class, 'getCard'])
     ->middleware('auth')
     ->name('getCard');
 
+Route::post('/game/{game}/db', [CasinoController::class, 'doubleBet'])
+    ->middleware('auth')
+    ->name('doubleBet');
+
 Route::patch('/game/{game}', [CasinoController::class, 'stopMove'])
     ->middleware('auth')
     ->name('stopMove');
 
-Route::post('/game/{game}', [CasinoController::class, 'croupiersMove'])
+Route::post('/game/{game}/sdfsdfdsf', [CasinoController::class, 'croupiersMove'])
     ->middleware('auth')
     ->name('croupiersMove');

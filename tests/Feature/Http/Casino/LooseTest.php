@@ -28,7 +28,7 @@ test('user looses', function () {
 
     $response = $this->actingAs($user)
         ->from(route('game', $game))
-        ->delete(route('loose', $game));
+        ->get(route('loose', $game));
 
     $response->assertRedirectToRoute('home');
 

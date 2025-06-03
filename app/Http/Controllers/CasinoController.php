@@ -70,6 +70,15 @@ final class CasinoController
         return to_route('game', $game);
     }
 
+    public function doubleBet(Game $game): RedirectResponse
+    {
+        $game->bet = $game->bet * 2;
+        $game->status = GameStatus::CroupiersMove;
+        $game->save();
+
+        return to_route('game', $game);
+    }
+
     public function stopMove(Game $game): RedirectResponse
     {
         $game->status = GameStatus::CroupiersMove;

@@ -17,13 +17,9 @@ Route::get('/game/{game}', [CasinoController::class, 'game'])
     ->middleware('auth')
     ->name('game');
 
-Route::get('/game/{game}/loose', [CasinoController::class, 'loose'])
+Route::get('/game/{game}/endGame', [CasinoController::class, 'endGame'])
     ->middleware('auth')
-    ->name('loose');
-
-Route::get('/game/{game}/win', [CasinoController::class, 'win'])
-    ->middleware('auth')
-    ->name('win');
+    ->name('endGame');
 
 Route::post('/game/{game}', [CasinoController::class, 'getCard'])
     ->middleware('auth')

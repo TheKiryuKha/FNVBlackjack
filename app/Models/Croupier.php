@@ -28,4 +28,9 @@ final class Croupier extends Model
     {
         return 'croupier';
     }
+
+    public function getPoints(): int
+    {
+        return collect($this->cards)->sum('points');
+    }
 }

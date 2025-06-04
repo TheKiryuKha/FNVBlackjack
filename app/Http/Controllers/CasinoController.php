@@ -31,7 +31,7 @@ final class CasinoController
 
         $game = $action->handle($user, $bet);
 
-        return redirect(route('game', $game));
+        return to_route('game', $game);
     }
 
     public function game(Game $game): RedirectResponse|View
@@ -89,43 +89,30 @@ final class CasinoController
             ->with('_method', 'POST');
     }
 
-    public function croupierMove(): Response
-    {
-        return response(status: 200);
-    }
-
-    public function loose(Game $game): RedirectResponse
+    public function endGame(Game $game)
     {
         $user = $game->user;
+        $croupier = $game->croupier;
 
-        $user->chips = $user->chips - $game->bet;
-        $user->chipsWon = $user->chipsWon - $game->bet;
-        $user->save();
+        if($user->getPoints() > $croupier->getPoints()){
+            // WinUser
+            $user->chips = $user->chips + $game->bet;
+            $user->chipsWon = $user->chipsWon + $game->bet;
+            $user->save();
+        }
 
+        if($game->user->getPoints() < $game->croupier->getPoints()){
+            // LooseUser
+            $user->chips = $user->chips - $game->bet;
+            $user->chipsWon = $user->chipsWon - $game->bet;
+            $user->save();
+        }
+
+        // GameDelete
         $user->cards->each(function ($card) {
             $card->delete();
         });
-        $game->croupier->cards->each(function ($card) {
-            $card->delete();
-        });
-
-        $game->delete();
-
-        return to_route('home');
-    }
-
-    public function win(Game $game): RedirectResponse
-    {
-        $user = $game->user;
-
-        $user->chips = $user->chips + $game->bet;
-        $user->chipsWon = $user->chipsWon + $game->bet;
-        $user->save();
-
-        $user->cards->each(function ($card) {
-            $card->delete();
-        });
-        $game->croupier->cards->each(function ($card) {
+        $croupier->cards->each(function ($card) {
             $card->delete();
         });
 

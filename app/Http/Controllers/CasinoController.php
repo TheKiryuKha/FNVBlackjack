@@ -79,16 +79,6 @@ final class CasinoController
         return to_route('game', $game);
     }
 
-    public function stopMove(Game $game): RedirectResponse
-    {
-        $game->status = GameStatus::CroupiersMove;
-        $game->save();
-
-        return redirect()
-            ->route('croupiersMove', $game)
-            ->with('_method', 'POST');
-    }
-
     public function endGame(Game $game, DeleteGame $action): RedirectResponse
     {
         $action->handle($game);

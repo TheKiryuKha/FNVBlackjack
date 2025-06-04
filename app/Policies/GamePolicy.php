@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Models\User;
 
-class GamePolicy
+final class GamePolicy
 {
     public function create(User $user): bool
     {
@@ -20,7 +22,7 @@ class GamePolicy
 
     public function isGameOver(User $user)
     {
-        if($user->getPoints() >= 21){
+        if ($user->getPoints() >= 21) {
             return true;
         }
     }

@@ -18,11 +18,11 @@ final class DeleteGame
     {
         DB::transaction(function () use ($game) {
 
-            if($game->user->getPoints() > 21){
+            if ($game->user->getPoints() > 21) {
                 $this->looseAction->handle($game->user, $game->bet);
             }
 
-            if($game->croupier->getPoints() > 21){
+            if ($game->croupier->getPoints() > 21) {
                 $this->winAction->handle($game->user, $game->bet);
             }
 
@@ -34,7 +34,6 @@ final class DeleteGame
                 $this->looseAction->handle($game->user, $game->bet);
             }
 
-            
             $game->user->cards->each(function ($card) {
                 $card->delete();
             });

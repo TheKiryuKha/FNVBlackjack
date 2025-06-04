@@ -6,15 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Actions\CreateCard;
 use App\Actions\DeleteGame;
+use App\Actions\EditGame;
 use App\Actions\StartGame;
-use App\Enums\GameStatus;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
 use App\Models\User;
 use App\Policies\GamePolicy;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use function GuzzleHttp\default_ca_bundle;
 
 final class GameController
 {
@@ -38,7 +37,7 @@ final class GameController
 
     public function show(Game $game, GamePolicy $policy): RedirectResponse|View
     {
-        return match(true){
+        return match (true) {
             $policy->isCroupierMove($game) => to_route(''),
             $policy->isGameOver($game->user) => to_route('games.destory'),
             default => view('games.show', [
@@ -63,11 +62,9 @@ final class GameController
         return to_route('games.show', $game);
     }
 
-    public function update(Game $game): RedirectResponse
+    public function update(Game $game, EditGame $action): RedirectResponse
     {
-        $game->bet = $game->bet * 2;
-        $game->status = GameStatus::CroupiersMove;
-        $game->save();
+        $action->handle($game);
 
         return to_route('games.show', $game);
     }

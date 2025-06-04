@@ -6,7 +6,7 @@ use App\Http\Controllers\GameController;
 use App\Models\Game;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(GameController::class)->middleware('auth')->group(function(){
+Route::controller(GameController::class)->middleware('auth')->group(function () {
     Route::get('/', 'create')
         ->can('create', Game::class)
         ->name('games.create');
@@ -28,9 +28,8 @@ Route::controller(GameController::class)->middleware('auth')->group(function(){
         ->name('games.destroy');
 });
 
-
 // Уберу это на CardContrller
 Route::post('/game/{game}', [GameController::class, 'getCard'])
     ->middleware('auth')
     ->name('getCard');
-// 
+//

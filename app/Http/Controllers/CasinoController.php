@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\CreateCard;
+use App\Actions\DeleteGame;
 use App\Actions\StartGame;
 use App\Enums\GameStatus;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 final class CasinoController
@@ -89,34 +89,9 @@ final class CasinoController
             ->with('_method', 'POST');
     }
 
-    public function endGame(Game $game)
+    public function endGame(Game $game, DeleteGame $action): RedirectResponse
     {
-        $user = $game->user;
-        $croupier = $game->croupier;
-
-        if($user->getPoints() > $croupier->getPoints()){
-            // WinUser
-            $user->chips = $user->chips + $game->bet;
-            $user->chipsWon = $user->chipsWon + $game->bet;
-            $user->save();
-        }
-
-        if($game->user->getPoints() < $game->croupier->getPoints()){
-            // LooseUser
-            $user->chips = $user->chips - $game->bet;
-            $user->chipsWon = $user->chipsWon - $game->bet;
-            $user->save();
-        }
-
-        // GameDelete
-        $user->cards->each(function ($card) {
-            $card->delete();
-        });
-        $croupier->cards->each(function ($card) {
-            $card->delete();
-        });
-
-        $game->delete();
+        $action->handle($game);
 
         return to_route('home');
     }

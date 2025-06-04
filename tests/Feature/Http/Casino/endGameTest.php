@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Card;
 use App\Models\Croupier;
 use App\Models\Game;
 use App\Models\User;
 
-
-test('user wins game', function(){
+test('user wins game', function () {
     $user = User::factory()->create(['chips' => 200]);
     $croupier = Croupier::factory()->create();
     $game = Game::factory()->create([
@@ -18,13 +19,13 @@ test('user wins game', function(){
         'game_id' => $game->id,
         'owner_id' => $user->id,
         'owner_type' => 'user',
-        'points' => 10
+        'points' => 10,
     ]);
     Card::factory()->count(2)->create([
         'game_id' => $game->id,
         'owner_id' => $croupier->id,
         'owner_type' => 'croupier',
-        'points' => 1
+        'points' => 1,
     ]);
 
     $response = $this->actingAs($user)
@@ -53,13 +54,13 @@ test('user looses game', function () {
         'game_id' => $game->id,
         'owner_id' => $user->id,
         'owner_type' => 'user',
-        'points' => 1
+        'points' => 1,
     ]);
     Card::factory()->count(2)->create([
         'game_id' => $game->id,
         'owner_id' => $croupier->id,
         'owner_type' => 'croupier',
-        'points' => 10
+        'points' => 10,
     ]);
 
     $response = $this->actingAs($user)

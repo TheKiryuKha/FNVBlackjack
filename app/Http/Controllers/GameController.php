@@ -14,14 +14,14 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-final class CasinoController
+final class GameController
 {
-    public function index(): View
+    public function create(): View
     {
-        return view('welcome');
+        return view('game.create');
     }
 
-    public function startGame(GameRequest $request, StartGame $action): RedirectResponse
+    public function store(GameRequest $request, StartGame $action): RedirectResponse
     {
         /** @var int $bet */
         $bet = (int) $request->validated()['bet'];
@@ -31,10 +31,10 @@ final class CasinoController
 
         $game = $action->handle($user, $bet);
 
-        return to_route('game', $game);
+        return to_route('games.show', $game);
     }
 
-    public function game(Game $game): RedirectResponse|View
+    public function show(Game $game): RedirectResponse|View
     {
         // auth
         if ($game->user->getPoints() === 21) {
@@ -52,13 +52,16 @@ final class CasinoController
         $user_cards = $game->user->cards;
         $croupiers_cards = $game->croupier->cards;
 
-        return view('game', [
+        return view('game.show', [
             'game' => $game,
             'users_cards' => $user_cards,
             'croupiers_cards' => $croupiers_cards,
         ]);
     }
 
+    /**
+     * вынести это в CardController
+     */
     public function getCard(Game $game, CreateCard $action): RedirectResponse
     {
         $action->handle([
@@ -67,22 +70,22 @@ final class CasinoController
             'owner_type' => 'user',
         ]);
 
-        return to_route('game', $game);
+        return to_route('games.show', $game);
     }
 
-    public function doubleBet(Game $game): RedirectResponse
+    public function update(Game $game): RedirectResponse
     {
         $game->bet = $game->bet * 2;
         $game->status = GameStatus::CroupiersMove;
         $game->save();
 
-        return to_route('game', $game);
+        return to_route('games.show', $game);
     }
 
-    public function endGame(Game $game, DeleteGame $action): RedirectResponse
+    public function destroy(Game $game, DeleteGame $action): RedirectResponse
     {
         $action->handle($game);
 
-        return to_route('home');
+        return to_route('games.create');
     }
 }

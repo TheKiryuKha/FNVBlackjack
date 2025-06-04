@@ -2,37 +2,32 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\CasinoController;
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CasinoController::class, 'index'])
+Route::get('/', [GameController::class, 'create'])
     ->middleware('auth')
-    ->name('home');
+    ->name('games.create');
 
-Route::post('/', [CasinoController::class, 'startGame'])
+Route::post('/', [GameController::class, 'store'])
     ->middleware('auth')
-    ->name('startGame');
+    ->name('games.store');
 
-Route::get('/game/{game}', [CasinoController::class, 'game'])
+Route::get('/game/{game}', [GameController::class, 'show'])
     ->middleware('auth')
-    ->name('game');
+    ->name('games.show');
 
-Route::get('/game/{game}/endGame', [CasinoController::class, 'endGame'])
+Route::patch('/game/{game}', [GameController::class, 'update'])
     ->middleware('auth')
-    ->name('endGame');
+    ->name('games.update');
 
-Route::post('/game/{game}', [CasinoController::class, 'getCard'])
+Route::delete('/game/{game}', [GameController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('games.destroy');
+
+
+// Уберу это на CardContrller
+Route::post('/game/{game}', [GameController::class, 'getCard'])
     ->middleware('auth')
     ->name('getCard');
-
-Route::post('/game/{game}/db', [CasinoController::class, 'doubleBet'])
-    ->middleware('auth')
-    ->name('doubleBet');
-
-Route::patch('/game/{game}', [CasinoController::class, 'stopMove'])
-    ->middleware('auth')
-    ->name('stopMove');
-
-Route::post('/game/{game}/sdfsdfdsf', [CasinoController::class, 'croupiersMove'])
-    ->middleware('auth')
-    ->name('croupiersMove');
+// 

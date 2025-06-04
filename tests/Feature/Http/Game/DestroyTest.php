@@ -29,10 +29,10 @@ test('user wins game', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->from(route('game', $game))
-        ->get(route('endGame', $game));
+        ->from(route('games.show', $game))
+        ->delete(route('games.destroy', $game));
 
-    $response->assertRedirectToRoute('home');
+    $response->assertRedirectToRoute('games.create');
 
     expect($user->fresh())
         ->chips->toBe(400)
@@ -64,10 +64,10 @@ test('user looses game', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->from(route('game', $game))
-        ->get(route('endGame', $game));
+        ->from(route('games.show', $game))
+        ->delete(route('games.destroy', $game));
 
-    $response->assertRedirectToRoute('home');
+    $response->assertRedirectToRoute('games.create');
 
     expect($user->fresh())
         ->chips->toBe(0)

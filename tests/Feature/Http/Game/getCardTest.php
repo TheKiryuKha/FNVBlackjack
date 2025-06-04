@@ -10,9 +10,9 @@ test('user get card', function () {
     $game = Game::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user)
-        ->from(route('game', $game))
+        ->from(route('games.show', $game))
         ->post(route('getCard', $game))
-        ->assertRedirectToRoute('game', $game);
+        ->assertRedirectToRoute('games.show', $game);
 
     expect($user->fresh()->cards)->toHaveCount(1);
 });

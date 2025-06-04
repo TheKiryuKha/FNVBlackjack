@@ -10,14 +10,14 @@ test('user starts the game', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
-        ->from(route('home'))
-        ->post(route('startGame'), [
+        ->from(route('games.create'))
+        ->post(route('games.store'), [
             'bet' => 100,
         ]);
 
     $game = Game::first();
 
-    $response->assertRedirectToRoute('game', $game);
+    $response->assertRedirectToRoute('games.show', $game);
 
     expect($game)
         ->user_id->toBe($user->id)

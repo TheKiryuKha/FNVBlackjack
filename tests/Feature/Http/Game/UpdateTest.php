@@ -6,7 +6,7 @@ use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Models\User;
 
-test('user can double his test', function () {
+test('user can double his bet', function () {
     $user = User::factory()->create();
     $game = Game::factory()->create([
         'user_id' => $user->id,
@@ -14,9 +14,9 @@ test('user can double his test', function () {
     ]);
 
     $this->actingAs($user)
-        ->from(route('game', $game))
-        ->post(route('doubleBet', $game))
-        ->assertRedirectToRoute('game', $game);
+        ->from(route('games.show', $game))
+        ->patch(route('games.update', $game))
+        ->assertRedirectToRoute('games.show', $game);
 
     expect($game->fresh())
         ->bet->toBe(400)

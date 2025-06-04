@@ -30,7 +30,7 @@
     </form>
     <a><button>Удвоить ставку</button></a>
     <a><button>Достаточно</button></a>
-    <a href="{{ route('loose', $game) }}"><button>Отказ от игры</button></a>
+    <a href="{{ route('games.destroy', $game) }}"><button>Отказ от игры</button></a>
 
 </body>
 </html>

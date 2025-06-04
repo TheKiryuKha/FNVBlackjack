@@ -11,8 +11,10 @@ use App\Enums\GameStatus;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
 use App\Models\User;
+use App\Policies\GamePolicy;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use function GuzzleHttp\default_ca_bundle;
 
 final class GameController
 {
@@ -34,29 +36,17 @@ final class GameController
         return to_route('games.show', $game);
     }
 
-    public function show(Game $game): RedirectResponse|View
+    public function show(Game $game, GamePolicy $policy): RedirectResponse|View
     {
-        // auth
-        if ($game->user->getPoints() === 21) {
-            return to_route('win', $game);
-        }
-
-        if ($game->user->getPoints() > 21) {
-            return to_route('loose', $game);
-        }
-
-        if ($game->status === GameStatus::CroupiersMove) {
-            return to_route('');
-        }
-
-        $user_cards = $game->user->cards;
-        $croupiers_cards = $game->croupier->cards;
-
-        return view('game.show', [
-            'game' => $game,
-            'users_cards' => $user_cards,
-            'croupiers_cards' => $croupiers_cards,
-        ]);
+        return match(true){
+            $policy->isCroupierMove($game) => to_route(''),
+            $policy->isGameOver($game->user) => to_route('games.destory'),
+            default => view('games.show', [
+                'game' => $game,
+                'users_cards' => $game->user->cards,
+                'croupiers_cards' => $game->croupier->cards,
+            ])
+        };
     }
 
     /**

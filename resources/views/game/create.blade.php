@@ -13,7 +13,7 @@
         </form>
     @endauth
     
-    <form action="{{ route('startGame') }}" method="post">
+    <form action="{{ route('games.store') }}" method="post">
         @csrf
         <p>
             Текущая ставка: <input type="int" name="bet" id="numericInput" min="0" max="200" value="0">

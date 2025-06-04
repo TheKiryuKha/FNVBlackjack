@@ -11,7 +11,7 @@ test('user get card', function () {
 
     $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->post(route('getCard', $game))
+        ->post(route('cards.store', $game))
         ->assertRedirectToRoute('games.show', $game);
 
     expect($user->fresh()->cards)->toHaveCount(1);

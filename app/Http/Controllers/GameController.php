@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\CreateCard;
 use App\Actions\DeleteGame;
 use App\Actions\EditGame;
 use App\Actions\StartGame;
@@ -46,20 +45,6 @@ final class GameController
                 'croupiers_cards' => $game->croupier->cards,
             ])
         };
-    }
-
-    /**
-     * вынести это в CardController
-     */
-    public function getCard(Game $game, CreateCard $action): RedirectResponse
-    {
-        $action->handle([
-            'game_id' => $game->id,
-            'owner_id' => $game->user->id,
-            'owner_type' => 'user',
-        ]);
-
-        return to_route('games.show', $game);
     }
 
     public function update(Game $game, EditGame $action): RedirectResponse

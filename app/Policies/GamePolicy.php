@@ -15,11 +15,6 @@ final class GamePolicy
         return $user->game === null;
     }
 
-    public function show(User $user, Game $game): bool
-    {
-        return $user->id === $game->user_id;
-    }
-
     public function isGameOver(User $user)
     {
         if ($user->getPoints() >= 21) {
@@ -32,12 +27,7 @@ final class GamePolicy
         return $game->status === GameStatus::CroupiersMove;
     }
 
-    public function destroy(User $user, Game $game): bool
-    {
-        return $user->id === $game->user_id;
-    }
-
-    public function update(User $user, Game $game): bool
+    public function isUser(User $user, Game $game): bool
     {
         return $user->id === $game->user_id;
     }

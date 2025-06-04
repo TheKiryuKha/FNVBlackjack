@@ -24,7 +24,7 @@
         <p>{{ $card->type }} {{ $card->suit }}</p>    
     @endforeach
 
-    <form action="{{ route('getCard', $game) }}}}" method="post">
+    <form action="{{ route('cards.store', $game) }}}}" method="post">
         @csrf
         <button type="submit">Еще карта</button>
     </form>

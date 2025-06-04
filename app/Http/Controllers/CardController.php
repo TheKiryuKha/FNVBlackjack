@@ -12,9 +12,12 @@ final class CardController
 {
     public function __invoke(Game $game, CreateCard $action): RedirectResponse
     {
+        /** @var \App\Models\User $user */
+        $user = $game->user;
+
         $action->handle([
             'game_id' => $game->id,
-            'owner_id' => $game->user->id,
+            'owner_id' => $user->id,
             'owner_type' => 'user',
         ]);
 

@@ -17,29 +17,27 @@ final class DeleteGame
     public function handle(Game $game): void
     {
         DB::transaction(function () use ($game) {
+            /** @var \App\Models\User $user */
+            $user = $game->user;
 
-            if ($game->user->getPoints() > 21) {
-                $this->looseAction->handle($game->user, $game->bet);
+            /** @var \App\Models\Croupier $croupier */
+            $croupier = $game->croupier;
+
+            $userPoints = $user->getPoints();
+            $croupierPoints = $croupier->getPoints();
+
+            if ($userPoints > 21) {
+                $this->looseAction->handle($game);
+            } elseif ($croupierPoints > 21) {
+                $this->winAction->handle($game);
+            } elseif ($userPoints > $croupierPoints) {
+                $this->winAction->handle($game);
+            } elseif ($userPoints < $croupierPoints) {
+                $this->looseAction->handle($game);
             }
 
-            if ($game->croupier->getPoints() > 21) {
-                $this->winAction->handle($game->user, $game->bet);
-            }
-
-            if ($game->user->getPoints() > $game->croupier->getPoints()) {
-                $this->winAction->handle($game->user, $game->bet);
-            }
-
-            if ($game->user->getPoints() < $game->croupier->getPoints()) {
-                $this->looseAction->handle($game->user, $game->bet);
-            }
-
-            $game->user->cards->each(function ($card) {
-                $card->delete();
-            });
-            $game->croupier->cards->each(function ($card) {
-                $card->delete();
-            });
+            $user->cards()->delete();
+            $croupier->cards()->delete();
 
             $game->delete();
         });

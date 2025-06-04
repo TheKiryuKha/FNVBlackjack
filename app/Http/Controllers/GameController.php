@@ -23,11 +23,11 @@ final class GameController
 
     public function store(GameRequest $request, StartGame $action): RedirectResponse
     {
-        /** @var int $bet */
-        $bet = (int) $request->validated()['bet'];
-
         /** @var User $user */
         $user = auth()->user();
+
+        /** @var int $bet */
+        $bet = $request->validated()['bet'];
 
         $game = $action->handle($user, $bet);
 
@@ -36,13 +36,19 @@ final class GameController
 
     public function show(Game $game, GamePolicy $policy): RedirectResponse|View
     {
+        /** @var User $user */
+        $user = $game->user;
+
+        /** @var \App\Models\Croupier $croupier */
+        $croupier = $game->croupier;
+
         return match (true) {
-            $policy->isCroupierMove($game) => to_route(''),
-            $policy->isGameOver($game->user) => to_route('games.destory'),
-            default => view('games.show', [
+            $policy->isCroupierMove($game) => to_route('croupier'),
+            $policy->isGameOver($user) => to_route('games.destroy', $game),
+            default => view('game.show', [
                 'game' => $game,
-                'users_cards' => $game->user->cards,
-                'croupiers_cards' => $game->croupier->cards,
+                'users_cards' => $user->cards,
+                'croupiers_cards' => $croupier->cards,
             ])
         };
     }

@@ -51,7 +51,8 @@ final class User extends Authenticatable
 
     public function getPoints(): int
     {
-        return collect($this->cards)->sum('points');
+        return collect($this->cards)
+            ->sum(fn (Card $card) => (int) $card->points);
     }
 
     public function getMorphClass(): string

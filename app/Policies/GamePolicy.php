@@ -15,11 +15,13 @@ final class GamePolicy
         return $user->game === null;
     }
 
-    public function isGameOver(User $user)
+    public function isGameOver(User $user): bool
     {
         if ($user->getPoints() >= 21) {
             return true;
         }
+
+        return false;
     }
 
     public function isCroupierMove(Game $game): bool

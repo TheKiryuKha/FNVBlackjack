@@ -40,5 +40,5 @@ test('user redirects when croupiers move', function () {
 
     $this->actingAs($user)
         ->get(route('games.show', $game))
-        ->assertRedirectToRoute('croupier');
+        ->assertRedirectToRoute('croupier', $game);
 });

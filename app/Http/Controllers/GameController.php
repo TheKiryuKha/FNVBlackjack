@@ -43,7 +43,7 @@ final class GameController
         $croupier = $game->croupier;
 
         return match (true) {
-            $policy->isCroupierMove($game) => to_route('croupier'),
+            $policy->isCroupierMove($game) => to_route('croupier', $game),
             $policy->isGameOver($user) => to_route('games.destroy', $game),
             default => view('game.show', [
                 'game' => $game,

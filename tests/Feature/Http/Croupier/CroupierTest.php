@@ -13,9 +13,9 @@ test('croupier takes cards', function () {
     $this->actingAs($user)
         ->from(route('games.show', $game))
         ->post(route('croupier', $game))
-        ->assertRedirectToRoute('games.destroy', $game);
+        ->assertRedirectToRoute('games.show', $game);
 
-    expect($game->fresh()->status)->toBe(GameStatus::CroupiersMove);
+    expect($game->refresh()->status)->toBe(GameStatus::GameOver);
 
     expect($game->croupier->getPoints() >= 17)
         ->toBe(true);

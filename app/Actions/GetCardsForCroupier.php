@@ -30,6 +30,9 @@ final class GetCardsForCroupier
                     'game_id' => $game->id,
                 ]);
             }
+
+            $game->status = GameStatus::GameOver;
+            $game->save();
         });
     }
 }

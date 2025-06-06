@@ -34,7 +34,7 @@ final class GameController
         return to_route('games.show', $game);
     }
 
-    public function show(Game $game, GamePolicy $policy): RedirectResponse|View
+    public function show(Game $game, GamePolicy $policy): View
     {
         /** @var User $user */
         $user = $game->user;
@@ -42,15 +42,14 @@ final class GameController
         /** @var \App\Models\Croupier $croupier */
         $croupier = $game->croupier;
 
-        return match (true) {
-            $policy->isCroupierMove($game) => to_route('croupier', $game),
-            $policy->isGameOver($user) => to_route('games.destroy', $game),
-            default => view('game.show', [
-                'game' => $game,
-                'users_cards' => $user->cards,
-                'croupiers_cards' => $croupier->cards,
-            ])
-        };
+        return view('game.show', [
+            'game' => $game,
+            'users_cards' => $user->cards,
+            'croupiers_cards' => $croupier->cards,
+            'isCroupiersMove' => $policy->isCroupierMove($game),
+            'isUserHasMoreChips' => $policy->isUserHasMoreChips($user),
+            'isGameOver' => $policy->isGameOver($game),
+        ]);
     }
 
     public function update(Game $game, EditGame $action): RedirectResponse

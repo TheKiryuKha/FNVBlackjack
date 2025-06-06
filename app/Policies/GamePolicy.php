@@ -15,13 +15,18 @@ final class GamePolicy
         return $user->game === null;
     }
 
-    public function isGameOver(User $user): bool
+    public function isUserHasMoreChips(User $user): bool
     {
         if ($user->getPoints() >= 21) {
             return true;
         }
 
         return false;
+    }
+
+    public function isGameOver(Game $game): bool
+    {
+        return $game->status === GameStatus::GameOver;
     }
 
     public function isCroupierMove(Game $game): bool

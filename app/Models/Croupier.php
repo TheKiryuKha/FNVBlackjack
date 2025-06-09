@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -15,7 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read string $name
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
+ * 
  * @property-read Collection<int, Card> $cards
+ * @property-read Game|null $game
  */
 final class Croupier extends Model
 {
@@ -31,6 +34,12 @@ final class Croupier extends Model
     public function cards(): MorphMany
     {
         return $this->morphMany(Card::class, 'owner');
+    }
+
+    /** @return HasOne<Game, $this> */
+    public function game(): HasOne
+    {
+        return $this->hasOne(Game::class);
     }
 
     public function getMorphClass(): string

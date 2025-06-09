@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\GameStatus;
+use App\Models\Croupier;
 use App\Models\Game;
 use DB;
 
@@ -14,11 +15,11 @@ final class GetCardsForCroupier
         private CreateCard $action,
     ) {}
 
-    public function handle(Game $game): void
+    public function handle(Croupier $croupier): void
     {
-        DB::transaction(function () use ($game) {
-            /** @var \App\Models\Croupier $croupier */
-            $croupier = $game->croupier;
+        DB::transaction(function () use ($croupier) {
+            /** @var Game $game */
+            $game = $croupier->game;
 
             $this->action->handle([
                 'owner_id' => $croupier->id,

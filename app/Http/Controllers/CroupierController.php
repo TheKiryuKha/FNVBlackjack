@@ -12,7 +12,7 @@ final class CroupierController
 {
     public function store(Game $game, GetCardsForCroupier $action): JsonResponse
     {
-        $action->handle($game);
+        $action->handle($game->croupier);
 
         return response()->json([
             'croupiers_cards' => $game->croupier->cards,

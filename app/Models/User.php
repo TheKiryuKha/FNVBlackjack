@@ -10,7 +10,24 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+use \Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @property-read int $id
+ * @property-read string $name
+ * @property-read string $email
+ * @property-read int $chips
+ * @property-read int $chipsWon
+ * @property-read \DateTimeInterface|null $email_verified_at
+ * @property-read string $password
+ * @property-read string|null $remember_token
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
+ * 
+ * @property-read Game|null $game
+ * @property-read Collection<int, Card> $cards
+ */
 final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -52,7 +69,7 @@ final class User extends Authenticatable
     public function getPoints(): int
     {
         return collect($this->cards)
-            ->sum(fn (Card $card) => (int) $card->points);
+            ->sum(fn (Card $card) => $card->points);
     }
 
     public function getMorphClass(): string

@@ -27,8 +27,9 @@ final class GetCardsForCroupier
             ]);
 
             if ($croupier->refresh()->getPoints() >= 17) {
-                $game->status = GameStatus::GameOver;
-                $game->save();
+                $game->update([
+                    'status' => GameStatus::GameOver
+                ]);
             }
         });
     }

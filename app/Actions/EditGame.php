@@ -13,9 +13,10 @@ final class EditGame
     public function handle(Game $game): void
     {
         DB::transaction(function () use ($game) {
-            $game->bet = $game->bet * 2;
-            $game->status = GameStatus::CroupiersMove;
-            $game->save();
+            $game->update([
+                'bet' => $game->bet * 2,
+                'status' => GameStatus::CroupiersMove
+            ]);
         });
     }
 }

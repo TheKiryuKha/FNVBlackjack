@@ -66,7 +66,7 @@ final class GameController
     public function croupiersMove(Game $game): JsonResponse
     {
         $game->update([
-            'status' => GameStatus::CroupiersMove
+            'status' => GameStatus::CroupiersMove,
         ]);
 
         return response()->json([

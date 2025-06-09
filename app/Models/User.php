@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property-read int $id
@@ -19,12 +20,11 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read string $email
  * @property-read int $chips
  * @property-read int $chipsWon
- * @property-read \DateTimeInterface|null $email_verified_at
+ * @property-read DateTimeInterface|null $email_verified_at
  * @property-read string $password
  * @property-read string|null $remember_token
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
- * 
  * @property-read Game|null $game
  * @property-read Collection<int, Card> $cards
  */

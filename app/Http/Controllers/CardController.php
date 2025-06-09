@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 final class CardController
 {
-    public function __invoke(Game $game, CreateCard $action): JsonResponse
+    public function store(Game $game, CreateCard $action): JsonResponse
     {
         /** @var \App\Models\User $user */
         $user = $game->user;

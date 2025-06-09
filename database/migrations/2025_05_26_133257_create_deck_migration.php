@@ -27,18 +27,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $cards = array_map(fn(CardFace $case) => $case->value, CardFace::cases());
+        $cards = array_map(fn (CardFace $case) => $case->value, CardFace::cases());
         $faces = [
-                CardFace::King->value,
-                CardFace::Queen->value,
-                CardFace::Ace->value, 
-                CardFace::Jack->value
+            CardFace::King->value,
+            CardFace::Queen->value,
+            CardFace::Ace->value,
+            CardFace::Jack->value,
         ];
 
         foreach (CardSuit::cases() as $suit) {
-            
+
             $i = 2;
-            foreach(array_diff($cards, $faces) as $card){
+            foreach (array_diff($cards, $faces) as $card) {
                 DB::table('deck')->insert([
                     'type' => $card,
                     'suit' => $suit->value,

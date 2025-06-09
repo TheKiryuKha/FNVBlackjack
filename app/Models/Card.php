@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CardFace;
+use App\Enums\CardSuit;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use \Carbon\Carbon;
-use \App\Enums\CardSuit;
-use \App\Enums\CardFace;
 
 /**
  * @property-read int $id
@@ -22,7 +22,6 @@ use \App\Enums\CardFace;
  * @property-read int $points
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
- * 
  * @property-read User|Croupier $owner
  * @property-read Game $game
  */
@@ -33,7 +32,7 @@ final class Card extends Model
 
     protected $casts = [
         'type' => CardFace::class,
-        'suit' => CardSuit::class
+        'suit' => CardSuit::class,
     ];
 
     /** @return MorphTo<Model, $this>*/

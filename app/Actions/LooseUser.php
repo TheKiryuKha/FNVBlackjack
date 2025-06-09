@@ -14,7 +14,7 @@ final class LooseUser
         DB::transaction(function () use ($game) {
             $game->user->update([
                 'chips' => $game->user->chips - $game->bet,
-                'chipsWon' => $game->user->chipsWon - $game->bet
+                'chipsWon' => $game->user->chipsWon - $game->bet,
             ]);
         });
     }

@@ -10,15 +10,12 @@ use Illuminate\Http\JsonResponse;
 
 final class CroupierController
 {
-    public function __invoke(Game $game, GetCardsForCroupier $action): JsonResponse
+    public function store(Game $game, GetCardsForCroupier $action): JsonResponse
     {
         $action->handle($game);
 
-        /** @var \App\Models\Croupier $croupier */
-        $croupier = $game->croupier;
-
         return response()->json([
-            'croupiers_cards' => $croupier->cards,
+            'croupiers_cards' => $game->croupier->cards,
         ]);
     }
 }

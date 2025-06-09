@@ -15,7 +15,7 @@ final class EditGame
         DB::transaction(function () use ($game) {
             $game->update([
                 'bet' => $game->bet * 2,
-                'status' => GameStatus::CroupiersMove
+                'status' => GameStatus::CroupiersMove,
             ]);
         });
     }

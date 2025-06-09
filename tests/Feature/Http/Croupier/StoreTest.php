@@ -13,7 +13,7 @@ test('croupier takes cards', function () {
 
     $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->post(route('croupier', $game))
+        ->post(route('croupiers.store', $game))
         ->assertStatus(200);
 
     expect($game->croupier->cards)->toHaveCount(1);
@@ -37,7 +37,7 @@ test('croupier takes cards and game ends', function () {
 
     $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->post(route('croupier', $game))
+        ->post(route('croupiers.store', $game))
         ->assertStatus(200);
 
     expect($game->refresh()->status)->toBe(GameStatus::GameOver);

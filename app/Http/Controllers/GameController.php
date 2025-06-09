@@ -27,7 +27,7 @@ final class GameController
         $user = auth()->user();
 
         /** @var int $bet */
-        $bet = $request->validated()['bet'];
+        $bet = (int) $request->validated()['bet'];
 
         $game = $action->handle($user, $bet);
 

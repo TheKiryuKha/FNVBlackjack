@@ -6,11 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Actions\CreateCard;
 use App\Models\Game;
-use Illuminate\Http\RedirectResponse;
 
 final class CardController
 {
-    public function __invoke(Game $game, CreateCard $action): RedirectResponse
+    public function __invoke(Game $game, CreateCard $action)
     {
         /** @var \App\Models\User $user */
         $user = $game->user;
@@ -21,6 +20,8 @@ final class CardController
             'owner_type' => 'user',
         ]);
 
-        return to_route('games.show', $game);
+        return response()->json([
+            'user_cards' => $game->user->cards 
+        ]);
     }
 }

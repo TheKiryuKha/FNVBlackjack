@@ -19,16 +19,15 @@
         <p>{{ $card->type }} {{ $card->suit }}</p>    
     @endforeach
     
+    <div class="users_cards">
+        <p>Ваши карты: </p>
+        @foreach ($users_cards as $card)
+            <p>{{ $card->type }} {{ $card->suit }}</p>    
+        @endforeach
+    </div>
 
-    <p>Ваши карты: </p>
-    @foreach ($users_cards as $card)
-        <p>{{ $card->type }} {{ $card->suit }}</p>    
-    @endforeach
-
-    <form action="{{ route('cards.store', $game) }}}}" method="post">
-        @csrf
-        <button type="submit">Еще карта</button>
-    </form>
+    <button class="addCard">Еще карта</button>
+    
     <a><button>Удвоить ставку</button></a>
     <a><button>Достаточно</button></a>
     <a href="{{ route('games.destroy', $game) }}"><button>Отказ от игры</button></a>
@@ -36,6 +35,27 @@
 </body>
 <script>
     $('document').ready(function(){
+        
+        $('button.addCard').on('click', function(){
+            $.ajax({
+                method: "POST",
+                url: "{{ route('cards.store', $game) }}",
+                data: {
+                    _token : "{{ csrf_token() }}"
+                },
+                dataType: 'json'
+            })
+            .done(function(response) {
+                $('.users_cards').find('p:not(:first)').remove();
+    
+                // Добавляем новые карты
+                response.user_cards.forEach(function(card) {
+                    $('.users_cards').append('<p>' + card.type + ' ' + card.suit + '</p>');
+                }); 
+            });
+        });
+
+
         @if ($isCroupiersMove)
             $.ajax({
                 method: "POST",

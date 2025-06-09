@@ -6,10 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Actions\CreateCard;
 use App\Models\Game;
+use Illuminate\Http\JsonResponse;
 
 final class CardController
 {
-    public function __invoke(Game $game, CreateCard $action)
+    public function __invoke(Game $game, CreateCard $action): JsonResponse
     {
         /** @var \App\Models\User $user */
         $user = $game->user;
@@ -21,7 +22,7 @@ final class CardController
         ]);
 
         return response()->json([
-            'user_cards' => $game->user->cards 
+            'user_cards' => $user->cards,
         ]);
     }
 }

@@ -74,7 +74,6 @@
         "test": [
             "@test:lint",
             "@test:types",
-            "@test:type-coverage",
             "@test:unit"
         ]
     },

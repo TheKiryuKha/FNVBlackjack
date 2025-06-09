@@ -19,6 +19,10 @@ Route::controller(GameController::class)->middleware('auth')->group(function () 
         ->can('isUser', 'game')
         ->name('games.show');
 
+    Route::patch('/game/{game}/crpMove', 'croupiersMove')
+        ->can('isUser', 'game')
+        ->name('games.croupiersMove');
+
     Route::patch('/game/{game}', 'update')
         ->can('isUser', 'game')
         ->name('games.update');

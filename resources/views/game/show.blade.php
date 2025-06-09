@@ -73,22 +73,15 @@
 
         $('button.enough').on('click', function(){
             $.ajax({
-                method: "POST",
-                url: "{{ route('croupier', $game) }}",
+                method: "PATCH",
+                url: "{{ route('games.croupiersMove', $game) }}",
                 data: {
                     _token : "{{ csrf_token() }}"
                 },
                 dataType: 'json'
             })
             .done(function(response) {
-                $('.croupiers_cards').find('p:not(:first)').remove();
-    
-                // Добавляем новые карты
-                response.croupiers_cards.forEach(function(card) {
-                    $('.croupiers_cards').append('<p>' + card.type + ' ' + card.suit + '</p>');
-                });
-
-                console.log('крупье получил свой карты');
+                console.log('Теперь ходит крупье');
             });
         });
 
@@ -115,8 +108,15 @@
                     _token : "{{ csrf_token() }}"
                 }
             })
-            .done(function() {
-                console.log('Ход крупье'); 
+            .done(function(response) {
+                $('.croupiers_cards').find('p:not(:first)').remove();
+    
+                // Добавляем новые карты
+                response.croupiers_cards.forEach(function(card) {
+                    $('.croupiers_cards').append('<p>' + card.type + ' ' + card.suit + '</p>');
+                });
+
+                console.log('крупье получил свою карту');
             });
         @endif
 

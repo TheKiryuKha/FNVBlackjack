@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Models\User;
 
-test('user get card', function () {
+test('change game status to croupiers move', function () {
     $user = User::factory()->create();
     $game = Game::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->post(route('cards.store', $game))
+        ->patch(route('games.croupiersMove', $game))
         ->assertStatus(200);
 
-    expect($user->fresh()->cards)->toHaveCount(1);
+    expect($game->refresh()->status)
+        ->toBe(GameStatus::CroupiersMove);
 });

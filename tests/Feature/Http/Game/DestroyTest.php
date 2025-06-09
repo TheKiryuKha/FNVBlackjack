@@ -28,11 +28,10 @@ test('user wins game', function () {
         'points' => 1,
     ]);
 
-    $response = $this->actingAs($user)
+    $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->delete(route('games.destroy', $game));
-
-    $response->assertRedirectToRoute('games.create');
+        ->delete(route('games.destroy', $game))
+        ->assertStatus(200);
 
     expect($user->fresh())
         ->chips->toBe(400)
@@ -63,11 +62,10 @@ test('user looses game', function () {
         'points' => 10,
     ]);
 
-    $response = $this->actingAs($user)
+    $this->actingAs($user)
         ->from(route('games.show', $game))
-        ->delete(route('games.destroy', $game));
-
-    $response->assertRedirectToRoute('games.create');
+        ->delete(route('games.destroy', $game))
+        ->assertStatus(200);
 
     expect($user->fresh())
         ->chips->toBe(0)

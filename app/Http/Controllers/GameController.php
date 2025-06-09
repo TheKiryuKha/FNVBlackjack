@@ -7,10 +7,12 @@ namespace App\Http\Controllers;
 use App\Actions\DeleteGame;
 use App\Actions\EditGame;
 use App\Actions\StartGame;
+use App\Enums\GameStatus;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
 use App\Models\User;
 use App\Policies\GamePolicy;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -27,7 +29,7 @@ final class GameController
         $user = auth()->user();
 
         /** @var int $bet */
-        $bet = (int) $request->validated()['bet'];
+        $bet = $request->validated()['bet'];
 
         $game = $action->handle($user, $bet);
 
@@ -52,21 +54,31 @@ final class GameController
         ]);
     }
 
-    public function update(Game $game, EditGame $action)
+    public function update(Game $game, EditGame $action): JsonResponse
     {
         $action->handle($game);
 
         return response()->json([
-            'status' => 200
+            'status' => 200,
         ]);
     }
 
-    public function destroy(Game $game, DeleteGame $action)
+    public function croupiersMove(Game $game): JsonResponse
+    {
+        $game->status = GameStatus::CroupiersMove;
+        $game->save();
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
+    public function destroy(Game $game, DeleteGame $action): JsonResponse
     {
         $action->handle($game);
 
         return response()->json([
-            'status' => 200
+            'status' => 200,
         ]);
     }
 }

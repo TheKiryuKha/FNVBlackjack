@@ -20,19 +20,16 @@ final class GetCardsForCroupier
             /** @var \App\Models\Croupier $croupier */
             $croupier = $game->croupier;
 
-            $game->status = GameStatus::CroupiersMove;
-            $game->save();
+            $this->action->handle([
+                'owner_id' => $croupier->id,
+                'owner_type' => 'croupier',
+                'game_id' => $game->id,
+            ]);
 
-            while ($croupier->refresh()->getPoints() < 17) {
-                $this->action->handle([
-                    'owner_id' => $croupier->id,
-                    'owner_type' => 'croupier',
-                    'game_id' => $game->id,
-                ]);
+            if ($croupier->refresh()->getPoints() >= 17) {
+                $game->status = GameStatus::GameOver;
+                $game->save();
             }
-
-            $game->status = GameStatus::GameOver;
-            $game->save();
         });
     }
 }

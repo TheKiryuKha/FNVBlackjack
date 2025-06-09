@@ -16,7 +16,7 @@ test('user can double his bet', function () {
     $this->actingAs($user)
         ->from(route('games.show', $game))
         ->patch(route('games.update', $game))
-        ->assertRedirectToRoute('games.show', $game);
+        ->assertStatus(200);
 
     expect($game->fresh())
         ->bet->toBe(400)

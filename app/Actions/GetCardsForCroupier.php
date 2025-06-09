@@ -21,11 +21,7 @@ final class GetCardsForCroupier
             /** @var Game $game */
             $game = $croupier->game;
 
-            $this->action->handle([
-                'owner_id' => $croupier->id,
-                'owner_type' => 'croupier',
-                'game_id' => $game->id,
-            ]);
+            $this->action->handle($game, $croupier);
 
             if ($croupier->refresh()->getPoints() >= 17) {
                 $game->update([

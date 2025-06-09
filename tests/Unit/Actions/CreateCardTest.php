@@ -12,11 +12,7 @@ it('creates card', function () {
     $user = User::factory()->create();
     $game = Game::factory()->create();
 
-    $action->handle([
-        'game_id' => $game->id,
-        'owner_id' => $user->id,
-        'owner_type' => 'user',
-    ]);
+    $action->handle($game, $user);
 
     expect(Card::count())->toBe(1)
         ->and(Card::first())

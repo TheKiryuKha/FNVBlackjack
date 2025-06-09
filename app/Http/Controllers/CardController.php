@@ -12,17 +12,10 @@ final class CardController
 {
     public function store(Game $game, CreateCard $action): JsonResponse
     {
-        /** @var \App\Models\User $user */
-        $user = $game->user;
-
-        $action->handle([
-            'game_id' => $game->id,
-            'owner_id' => $user->id,
-            'owner_type' => 'user',
-        ]);
+        $action->handle($game, $game->user);
 
         return response()->json([
-            'user_cards' => $user->cards,
+            'user_cards' => $game->user->cards,
         ]);
     }
 }

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read string $name
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
- * 
  * @property-read Collection<int, Card> $cards
  * @property-read Game|null $game
  */

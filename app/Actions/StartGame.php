@@ -13,7 +13,7 @@ use DB;
 final class StartGame
 {
     public function __construct(
-        private CreateCard $action
+        private CreateCard $createCard
     ) {}
 
     public function handle(User $user, int $bet): Game
@@ -41,17 +41,9 @@ final class StartGame
     private function createCards(Game $game, User $user, Croupier $croupier): void
     {
         for ($i = 0; $i < 2; $i++) {
-            $this->action->handle([
-                'game_id' => $game->id,
-                'owner_id' => $user->id,
-                'owner_type' => 'user',
-            ]);
+            $this->createCard->handle($game, $user);
         }
 
-        $this->action->handle([
-            'game_id' => $game->id,
-            'owner_id' => $croupier->id,
-            'owner_type' => 'croupier',
-        ]);
+        $this->createCard->handle($game, $croupier);
     }
 }

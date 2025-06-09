@@ -11,10 +11,12 @@ use Illuminate\Http\RedirectResponse;
 
 final class CroupierController
 {
-    public function __invoke(Game $game, GetCardsForCroupier $action, DeleteGame $deleteGame): RedirectResponse
+    public function __invoke(Game $game, GetCardsForCroupier $action)
     {
         $action->handle($game);
 
-        return to_route('games.show', $game);
+        return response()->json([
+            'croupiers_cards' => $game->croupier->cards
+        ]);
     }
 }

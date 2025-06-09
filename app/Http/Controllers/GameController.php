@@ -52,17 +52,21 @@ final class GameController
         ]);
     }
 
-    public function update(Game $game, EditGame $action): RedirectResponse
+    public function update(Game $game, EditGame $action)
     {
         $action->handle($game);
 
-        return to_route('games.show', $game);
+        return response()->json([
+            'status' => 200
+        ]);
     }
 
-    public function destroy(Game $game, DeleteGame $action): RedirectResponse
+    public function destroy(Game $game, DeleteGame $action)
     {
         $action->handle($game);
 
-        return to_route('games.create');
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

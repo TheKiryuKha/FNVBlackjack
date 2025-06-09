@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Models\Card;
 use App\Models\Game;
 use DB;
 
@@ -17,27 +18,21 @@ final class DeleteGame
     public function handle(Game $game): void
     {
         DB::transaction(function () use ($game) {
-            /** @var \App\Models\User $user */
-            $user = $game->user;
-
-            /** @var \App\Models\Croupier $croupier */
-            $croupier = $game->croupier;
-
-            $userPoints = $user->getPoints();
-            $croupierPoints = $croupier->getPoints();
+            $userPoints = $game->user->getPoints();
+            $croupierPoints = $game->croupier->getPoints();
 
             if ($userPoints > 21) {
-                $this->looseAction->handle($game);
+                $this->looseAction->handle($game->user);
             } elseif ($croupierPoints > 21) {
-                $this->winAction->handle($game);
+                $this->winAction->handle($game->user);
             } elseif ($userPoints > $croupierPoints) {
-                $this->winAction->handle($game);
+                $this->winAction->handle($game->user);
             } elseif ($userPoints < $croupierPoints) {
-                $this->looseAction->handle($game);
+                $this->looseAction->handle($game->user);
             }
 
-            $user->cards()->delete();
-            $croupier->cards()->delete();
+            $game->user->cards()->delete();
+            $game->croupier->cards()->delete();
 
             $game->delete();
         });

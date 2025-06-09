@@ -14,7 +14,7 @@ it('user looses', function () {
     ]);
     $action = app(WinUser::class);
 
-    $action->handle($game);
+    $action->handle($user);
 
     expect($user->fresh()->chips)->toBe(400);
 });

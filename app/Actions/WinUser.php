@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\Game;
+use App\Models\User;
 use DB;
 
 final class WinUser
 {
-    public function handle(Game $game): void
+    public function handle(User $user): void
     {
-        DB::transaction(function () use ($game) {
-            $game->user->update([
-                'chips' => $game->user->chips + $game->bet,
-                'chipsWon' => $game->user->chipsWon + $game->bet,
+        DB::transaction(function () use ($user) {
+            /** @var Game $game */
+            $game = $user->game;
+
+            $user->update([
+                'chips' => $user->chips + $game->bet,
+                'chipsWon' => $user->chipsWon + $game->bet,
             ]);
         });
     }
